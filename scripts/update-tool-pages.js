@@ -21,8 +21,16 @@ const HEAD_ADDITIONS = `
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  // Restore saved theme BEFORE render to avoid flash
+  (function(){
+    const t = localStorage.getItem('theme');
+    if (t === 'light') document.documentElement.classList.remove('dark');
+    else document.documentElement.classList.add('dark');
+  })();
+</script>
 <script id="tw-dark-config">
-  if(!window.tailwind) {} else {
+  if(window.tailwind) {
     tailwind.config = {
       darkMode: "class",
       theme: { extend: { colors: { primary: "#7f13ec" }, fontFamily: { display: ["Space Grotesk","sans-serif"] } } }
@@ -30,21 +38,47 @@ const HEAD_ADDITIONS = `
   }
 </script>
 <style>
-  html { font-family: 'Space Grotesk', sans-serif !important; }
-  body { background: #0f0814 !important; color: #e2e8f0 !important; }
-  .glass-nav-new {
-    background: rgba(25,16,34,0.7) !important;
+  html { font-family: 'Space Grotesk', sans-serif !important; transition: background 0.3s, color 0.3s; }
+  /* ── Dark mode ── */
+  html.dark body  { background: #0f0814 !important; color: #e2e8f0 !important; }
+  html.dark .glass-nav-new {
+    background: rgba(25,16,34,0.75) !important;
     backdrop-filter: blur(12px) !important;
     -webkit-backdrop-filter: blur(12px) !important;
-    border: 1px solid rgba(255,255,255,0.07) !important;
-    box-shadow: 0 4px 32px rgba(0,0,0,0.4) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.5) !important;
   }
-  .tool-card-dark {
-    background: rgba(25,16,34,0.6) !important;
-    border: 1px solid rgba(255,255,255,0.08) !important;
-    color: #e2e8f0 !important;
+  html.dark .tlv-footer { background: rgba(15,8,20,0.95) !important; border-top: 1px solid rgba(255,255,255,0.08) !important; }
+  /* ── Light mode ── */
+  html:not(.dark) body { background: #f7f6f8 !important; color: #1a1a2e !important; }
+  html:not(.dark) .glass-nav-new {
+    background: rgba(255,255,255,0.85) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06) !important;
   }
-</style>`;
+  html:not(.dark) .glass-nav-new a, html:not(.dark) .glass-nav-new span { color: #374151 !important; }
+  html:not(.dark) .glass-nav-new a:hover { color: #7f13ec !important; }
+  html:not(.dark) .glass-nav-new .nav-brand-text { color: #1a1a2e !important; }
+  html:not(.dark) .tlv-footer { background: #f0eef4 !important; border-top: 1px solid rgba(0,0,0,0.08) !important; }
+  html:not(.dark) .tlv-footer p, html:not(.dark) .tlv-footer a { color: #6b7280 !important; }
+  html:not(.dark) .tlv-footer h4 { color: #111827 !important; }
+  html:not(.dark) .tlv-footer a:hover { color: #7f13ec !important; }
+  /* Toggle button */
+  html.dark  #tlv-theme-icon::after  { content: 'light_mode'; }
+  html:not(.dark) #tlv-theme-icon::after { content: 'dark_mode'; }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var btn = document.getElementById('tlv-theme-toggle');
+    if (!btn) return;
+    btn.addEventListener('click', function() {
+      var isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+  });
+</script>`;
 
 // ─── New Header HTML ─────────────────────────────────────────────────────────
 function buildHeader(depthPrefix) {
@@ -54,16 +88,16 @@ function buildHeader(depthPrefix) {
                 <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-cyan-500 shadow-lg shadow-purple-500/20">
                     <span class="material-symbols-outlined text-white text-lg">handyman</span>
                 </div>
-                <span class="text-white text-xl font-bold tracking-tight">Tooleva</span>
+                <span class="nav-brand-text text-white text-xl font-bold tracking-tight">Tooleva</span>
             </a>
             <nav class="hidden md:flex space-x-6 text-sm font-medium items-center">
                 <a href="${depthPrefix}/tools/index.html" class="text-slate-300 hover:text-white transition-colors">Tools</a>
                 <a href="${depthPrefix}/blog/index.html" class="text-slate-300 hover:text-white transition-colors">Blog</a>
                 <a href="${depthPrefix}/about/index.html" class="text-slate-300 hover:text-white transition-colors">About</a>
                 <a href="${depthPrefix}/contact/index.html" class="text-slate-300 hover:text-white transition-colors">Contact</a>
-                <button type="button" id="theme-toggle" aria-label="Toggle Dark Mode"
-                    class="flex w-9 h-9 items-center justify-center rounded-full text-slate-300 hover:text-white hover:bg-white/10 transition-colors focus:outline-none ml-2">
-                    <span class="material-symbols-outlined text-xl">light_mode</span>
+                <button type="button" id="tlv-theme-toggle" aria-label="Toggle Dark Mode"
+                    class="flex w-9 h-9 items-center justify-center rounded-full text-slate-300 hover:text-white hover:bg-black/10 dark:hover:bg-white/10 transition-colors focus:outline-none ml-2">
+                    <span id="tlv-theme-icon" class="material-symbols-outlined text-xl"></span>
                 </button>
             </nav>
         </div>
@@ -72,7 +106,7 @@ function buildHeader(depthPrefix) {
 
 // ─── New Footer HTML ─────────────────────────────────────────────────────────
 function buildFooter(depthPrefix) {
-  return `    <footer style="background:rgba(15,8,20,0.9);border-top:1px solid rgba(255,255,255,0.08)" class="relative mt-auto pt-14 pb-8">
+  return `    <footer class="tlv-footer relative mt-auto pt-14 pb-8">
         <div class="absolute top-0 inset-x-0 h-[1px]" style="background:linear-gradient(90deg,transparent,rgba(127,19,236,0.5),transparent)"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
@@ -141,8 +175,15 @@ function processFile(filePath) {
     html = html.replace('<html', '<html class="dark"');
   }
 
-  // 2. Inject head additions before </head> (avoid duplication)
-  if (!html.includes('Space+Grotesk')) {
+  // 2. Remove old injected additions if present, then re-inject (handles re-runs)
+  // Strip everything we injected previously between the CDN tailwind tag and </style>
+  const OLD_MARKER = 'cdn.tailwindcss.com';
+  const NEW_MARKER = 'tlv-theme-toggle';
+  if (html.includes(OLD_MARKER) && !html.includes(NEW_MARKER)) {
+    // Old injection present but not new — remove old block before injecting new
+    html = html.replace(/\n?<script src="https:\/\/cdn\.tailwindcss\.com[\s\S]*?<\/style>\n?<script>\n\s*document\.addEventListener[\s\S]*?<\/script>/m, '');
+  }
+  if (!html.includes(NEW_MARKER)) {
     html = html.replace('</head>', `${HEAD_ADDITIONS}\n</head>`);
   }
 
