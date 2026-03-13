@@ -6,6 +6,8 @@
 <meta name="description" content="Tooleva offers free, secure online tools that process files right in your browser. Compress PDFs, convert images, calculate percentages, and more."/>
 <title>Tooleva | Free Online Tools for Everyday Work</title>
 <link rel="icon" type="image/png" href="/logo.png">
+<!-- Restore theme BEFORE render to avoid flash -->
+<script>(function(){ var t=localStorage.getItem('theme'); if(t==='light') document.documentElement.classList.remove('dark'); else document.documentElement.classList.add('dark'); })();</script>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -28,49 +30,77 @@
     }
 </script>
 <style>
-    .glass {
+    /* ── Dark mode (default) ── */
+    html.dark .glass {
         background: rgba(25, 16, 34, 0.6);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.07);
     }
-    .glass-card {
+    html.dark .glass-card {
         background: rgba(25, 16, 34, 0.6);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
         border: 1px solid rgba(255, 255, 255, 0.08);
         transition: all 0.3s ease;
     }
-    .glass-card:hover {
+    html.dark .glass-card:hover {
         transform: translateY(-3px);
         background: rgba(35, 22, 48, 0.85);
         border-color: rgba(127, 19, 236, 0.35);
         box-shadow: 0 12px 36px -10px rgba(127, 19, 236, 0.25);
     }
-    .gradient-text {
-        background: linear-gradient(135deg, #a855f7, #06b6d4);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-    .gradient-icon {
-        background: linear-gradient(135deg, #a855f7, #06b6d4);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-    .bg-glow {
-        position: absolute;
-        width: 600px;
-        height: 600px;
+    html.dark .bg-glow {
         background: radial-gradient(circle, rgba(127,19,236,0.15) 0%, rgba(15,8,20,0) 70%);
-        border-radius: 50%;
-        z-index: 0;
-        pointer-events: none;
     }
-    /* Search dropdown */
-    #search-results a { display: flex; align-items: center; gap: 12px; padding: 10px 16px; color: #cbd5e1; font-size: 14px; text-decoration: none; transition: background 0.15s; }
-    #search-results a:hover { background: rgba(127,19,236,0.15); color: white; }
+    html.dark .hero-search-wrap { background: #191022; border-color: rgba(255,255,255,0.1); }
+    html.dark #search-results { background: #1a1028; border-color: rgba(255,255,255,0.1); }
+    html.dark #search-results a { color: #cbd5e1; }
+    html.dark #search-results a:hover { background: rgba(127,19,236,0.15); color: white; }
+    /* ── Light mode ── */
+    html:not(.dark) body { background: #f7f6f8 !important; color: #1a1a2e !important; }
+    html:not(.dark) .glass {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    }
+    html:not(.dark) .glass-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+    }
+    html:not(.dark) .glass-card:hover {
+        transform: translateY(-3px);
+        background: rgba(255, 255, 255, 0.95);
+        border-color: rgba(127, 19, 236, 0.25);
+        box-shadow: 0 12px 36px -10px rgba(127, 19, 236, 0.15);
+    }
+    html:not(.dark) .bg-glow {
+        background: radial-gradient(circle, rgba(127,19,236,0.08) 0%, rgba(247,246,248,0) 70%);
+    }
+    html:not(.dark) .hero-h1 { color: #1a1a2e !important; }
+    html:not(.dark) .hero-sub { color: #4b5563 !important; }
+    html:not(.dark) .hero-badge { background: rgba(127,19,236,0.07) !important; border-color: rgba(127,19,236,0.15) !important; color: #374151 !important; }
+    html:not(.dark) .hero-badge span { color: inherit !important; }
+    html:not(.dark) .hero-search-wrap { background: white !important; border-color: rgba(0,0,0,0.1) !important; box-shadow: 0 4px 24px rgba(0,0,0,0.08) !important; }
+    html:not(.dark) .hero-search-wrap input { color: #1a1a2e !important; }
+    html:not(.dark) #search-results { background: white !important; border-color: rgba(0,0,0,0.08) !important; }
+    html:not(.dark) #search-results a { color: #374151 !important; }
+    html:not(.dark) #search-results a:hover { background: rgba(127,19,236,0.07) !important; color: #7f13ec !important; }
+    html:not(.dark) .section-title { color: #1a1a2e !important; }
+    html:not(.dark) .section-sub { color: #6b7280 !important; }
+    html:not(.dark) .card-title { color: #1a1a2e !important; }
+    html:not(.dark) .card-desc { color: #6b7280 !important; }
+    html:not(.dark) .cat-name { color: #1a1a2e !important; }
+    html:not(.dark) .cat-sub { color: #9ca3af !important; }
+    html:not(.dark) .cat-chevron { color: #d1d5db !important; }
+    /* Common */
+    .bg-glow { position: absolute; width: 600px; height: 600px; border-radius: 50%; z-index: 0; pointer-events: none; }
+    .gradient-text { background: linear-gradient(135deg, #a855f7, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     #search-results { scrollbar-width: thin; scrollbar-color: rgba(127,19,236,0.3) transparent; }
 </style>
 <script type="module">
@@ -83,15 +113,12 @@
         const updateIcon = () => {
             icon.textContent = document.documentElement.classList.contains('dark') ? 'light_mode' : 'dark_mode';
         };
-        updateIcon();
+        updateIcon(); // icon reflects current state (already set by inline script)
         btn.addEventListener('click', () => {
             document.documentElement.classList.toggle('dark');
             localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
             updateIcon();
         });
-        // Restore saved theme
-        const saved = localStorage.getItem('theme');
-        if (saved === 'light') { document.documentElement.classList.remove('dark'); updateIcon(); }
     });
 </script>
 <script type="application/ld+json">
@@ -122,7 +149,7 @@
         <div class="flex items-center justify-center size-8 rounded-lg bg-gradient-to-br from-purple-500 to-cyan-500 shadow-lg shadow-purple-500/20">
             <span class="material-symbols-outlined text-white text-xl">handyman</span>
         </div>
-        <span class="text-white text-xl font-bold leading-tight tracking-tight">Tooleva</span>
+        <span class="nav-brand-text text-white text-xl font-bold leading-tight tracking-tight">Tooleva</span>
     </a>
     <nav class="hidden md:flex flex-1 justify-center gap-8">
         <a class="text-slate-300 hover:text-white transition-colors text-sm font-medium" href="/tools/index.html">Tools</a>
@@ -143,27 +170,27 @@
         <span class="flex h-2 w-2 rounded-full bg-cyan-400 animate-pulse"></span>
         <span class="text-xs font-medium text-slate-300 uppercase tracking-wider">100+ Free Tools — No Registration</span>
     </div>
-    <h1 class="text-white text-5xl md:text-7xl font-bold leading-[1.1] tracking-tight max-w-4xl mx-auto mb-6">
+    <h1 class="hero-h1 text-white text-5xl md:text-7xl font-bold leading-[1.1] tracking-tight max-w-4xl mx-auto mb-6">
         Free Online Tools for<br/> <span class="gradient-text">Everyday Work</span>
     </h1>
-    <p class="text-slate-400 text-lg md:text-xl font-normal leading-relaxed max-w-2xl mx-auto mb-10">
+    <p class="hero-sub text-slate-400 text-lg md:text-xl font-normal leading-relaxed max-w-2xl mx-auto mb-10">
         Powerful browser-based utilities. Secure, private, and blazing fast.<br class="hidden sm:block"/> No uploads. No sign-up. Always free.
     </p>
     <!-- Feature badges -->
     <div class="flex flex-wrap justify-center gap-3 mb-12">
-        <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5">
+        <div class="hero-badge flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5">
             <span class="material-symbols-outlined text-green-400 text-base">cloud_off</span>
             <span class="text-sm text-slate-300">No Upload</span>
         </div>
-        <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5">
+        <div class="hero-badge flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5">
             <span class="material-symbols-outlined text-blue-400 text-base">lock</span>
             <span class="text-sm text-slate-300">100% Private</span>
         </div>
-        <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5">
+        <div class="hero-badge flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5">
             <span class="material-symbols-outlined text-purple-400 text-base">bolt</span>
             <span class="text-sm text-slate-300">Instant</span>
         </div>
-        <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5">
+        <div class="hero-badge flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5">
             <span class="material-symbols-outlined text-pink-400 text-base">apps</span>
             <span class="text-sm text-slate-300">100+ Tools</span>
         </div>
@@ -171,15 +198,15 @@
     <!-- Search Bar -->
     <div class="w-full max-w-2xl mx-auto relative group z-40 text-left">
         <div class="absolute -inset-1 bg-gradient-to-r from-purple-600 to-cyan-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
-        <div class="relative flex items-center w-full h-16 rounded-2xl bg-[#191022] border border-white/10 shadow-2xl overflow-visible p-2">
+        <div class="hero-search-wrap relative flex items-center w-full h-16 rounded-2xl border shadow-2xl overflow-visible p-2">
             <div class="flex items-center justify-center pl-4 pr-2 text-slate-400">
                 <span class="material-symbols-outlined">search</span>
             </div>
-            <input id="search-input" class="w-full h-full bg-transparent text-white placeholder-slate-500 border-none outline-none focus:ring-0 text-lg" placeholder="Search for PDF, Image, Video tools..." type="text" autocomplete="off"/>
+            <input id="search-input" class="w-full h-full bg-transparent placeholder-slate-500 border-none outline-none focus:ring-0 text-lg" placeholder="Search for PDF, Image, Video tools..." type="text" autocomplete="off"/>
             <button id="search-button" class="h-full px-6 bg-primary hover:bg-purple-600 text-white font-semibold rounded-xl transition-colors ml-2 shrink-0">Search</button>
         </div>
         <!-- Search Results Dropdown -->
-        <div id="search-results" class="hidden absolute top-full left-0 right-0 mt-2 bg-[#1a1028] rounded-2xl shadow-2xl border border-white/10 overflow-hidden max-h-80 overflow-y-auto z-50"></div>
+        <div id="search-results" class="hidden absolute top-full left-0 right-0 mt-2 rounded-2xl shadow-2xl overflow-hidden max-h-80 overflow-y-auto z-50"></div>
     </div>
 </section>
 
@@ -187,8 +214,8 @@
 <section class="py-12">
     <div class="flex items-center justify-between mb-8">
         <div>
-            <h2 class="text-white text-2xl font-bold tracking-tight">Popular Tools</h2>
-            <p class="text-slate-400 text-sm mt-1">Most used utilities by our community</p>
+            <h2 class="section-title text-white text-2xl font-bold tracking-tight">Popular Tools</h2>
+            <p class="section-sub text-slate-400 text-sm mt-1">Most used utilities by our community</p>
         </div>
         <a class="text-purple-400 hover:text-purple-300 text-sm font-medium flex items-center gap-1 transition-colors" href="/tools/index.html">
             View all <span class="material-symbols-outlined text-base">arrow_forward</span>
